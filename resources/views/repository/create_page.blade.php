@@ -29,7 +29,7 @@
             </div>
         @endif
 
-        <div class="base_block shadow p-4">
+        <div class="base_block shadow-sm p-4 rounded">
             <form method="POST" action="{{route('repository_create')}}">
                 @csrf
 
@@ -41,26 +41,26 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="prefix" class="form-label">Prefix <span
-                                class="text-muted">(max 3 symbols)</span></label>
-                    <input type="text" class="form-control" name="prefix"
-                           required maxlength="3"
-                           pattern="[^\s]+" title="please dont use the white space :)"
+                    <label for="prefix" class="form-label">Prefix <span class="text-muted">(max 3 symbols)</span></label>
+                    <input type="text" class="form-control" name="prefix" required maxlength="3"
+                           pattern="[^\s]+" title="please don't use whitespace"
                            style="text-transform:uppercase">
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="description" class="form-control" maxlength="255"> </textarea>
+                    <textarea name="description" class="form-control" maxlength="255"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-success px-5">
-                    Save
-                </button>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success px-4 me-2">
+                        Save
+                    </button>
 
-                <a href="{{ url()->previous() }}" class="btn btn-outline-dark px-5 ms-2">
-                    <b>Cancel</b>
-                </a>
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary px-4">
+                        Cancel
+                    </a>
+                </div>
             </form>
         </div>
 
