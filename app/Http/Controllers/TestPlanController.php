@@ -7,6 +7,7 @@ use App\Models\Repository;
 use App\Models\Suite;
 use App\Models\TestPlan;
 use App\Models\TestRun;
+use App\Models\TestCase;
 use Illuminate\Http\Request;
 
 class TestPlanController extends Controller
@@ -70,16 +71,27 @@ class TestPlanController extends Controller
         $project = Project::findOrFail($project_id);
         $repositories = $project->repositories;
         $testPlan = TestPlan::findOrFail($test_plan_id);
-        $testSuitesTree = Suite::where('repository_id',
-            $testPlan->repository_id)->orderBy('order')->tree()->get()->toTree();
+        $testSuitesTree = Suite::where('repository_id', $testPlan->repository_id)->orderBy('order')->tree()->get()->toTree();
         $prefix = Repository::findOrFail($testPlan->repository_id)->prefix;
+
+        // Fetch all test cases
+        $allTestCases = TestCase::all(); // Fetch all test cases
+
+        // Fetch test cases associated with the test plan
+        $selectedTestCases = explode(',', $testPlan->data); // Assuming 'data' contains the IDs of selected test cases
+
+        // Get the specific repository based on the test plan's repository_id
+        $repository = Repository::findOrFail($testPlan->repository_id);
 
         return view('test_plan.edit_page')
             ->with('project', $project)
             ->with('testPlan', $testPlan)
             ->with('repositories', $repositories)
+            ->with('repository', $repository)
             ->with('prefix', $prefix)
-            ->with('testSuitesTree', $testSuitesTree);
+            ->with('testSuitesTree', $testSuitesTree)
+            ->with('allTestCases', $allTestCases) // Pass all test cases to the view
+            ->with('selectedTestCases', $selectedTestCases); // Pass selected test cases
     }
 
     /*****************************************
