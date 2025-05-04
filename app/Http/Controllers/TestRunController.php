@@ -154,11 +154,12 @@ class TestRunController extends Controller
         $repository = Repository::findOrFail($suite->repository_id);
         $data = json_decode($testCase->data);
 
-        return view('test_run.test_case')
-            ->with('repository', $repository)
-            ->with('testCase', $testCase)
-            ->with('testRun', $testRun)
-            ->with('data', $data);
+        $uploadedFiles = \App\Models\TestRunUpload::where('test_run_id', $test_run_id)
+            ->where('test_case_id', $test_case_id)
+            ->get();
+
+        return view('test_run.test_case', compact('testRun', 'testCase', 'data', 'uploadedFiles'))
+            ->with('repository', $repository);
     }
 
     public function loadChart($test_run_id)

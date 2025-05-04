@@ -95,6 +95,37 @@
                     @endforeach
                 </div>
 
+                {{-- UPLOAD FILE SECTION --}}
+                <div class="row mb-3 border p-3 rounded">
+                    <form action="{{ route('test_run.upload_file', [$testRun->id, $testCase->id]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="input-group mb-2">
+                            <input type="file" name="result_file" class="form-control" required>
+                            <button class="btn btn-primary" type="submit">Upload Hasil</button>
+                        </div>
+                    </form>
+
+                    {{-- DAFTAR FILE HASIL UPLOAD --}}
+                    <div>
+                        <strong>Hasil Upload:</strong>
+                        <ul class="list-group mt-2">
+                            @forelse($uploadedFiles as $file)
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank">{{ $file->file_name }}</a>
+                                    <form action="{{ route('test_run.delete_file', [$testRun->id, $testCase->id, $file->id]) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Hapus file ini?')">Hapus</button>
+                                    </form>
+                                </li>
+                            @empty
+                                <li class="list-group-item">Belum ada file hasil upload.</li>
+                            @endforelse
+                        </ul>
+                    </div>
+                </div>
+                {{-- END UPLOAD FILE SECTION --}}
+
             @else
                 <p>No additional details available.</p>
             @endif

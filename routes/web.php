@@ -9,6 +9,7 @@ use App\Http\Controllers\TestPlanController;
 use App\Http\Controllers\TestRunController;
 use App\Http\Controllers\TestSuiteController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\TestRunUploadController;
 use Illuminate\Support\Facades\Route;
 
 /**********************************************************************
@@ -218,6 +219,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/test-run/update', [TestRunController::class, 'update'])->name("test_run_update");
     Route::post('/test-run/delete', [TestRunController::class, 'destroy'])->name("test_run_delete");
 
+    Route::post('/test-run/{testRun}/test-case/{testCase}/upload', [TestRunUploadController::class, 'upload'])->name('test_run.upload_file');
+    Route::delete('/test-run/{testRun}/test-case/{testCase}/upload/{upload}', [TestRunUploadController::class, 'destroy'])->name('test_run.delete_file');
 
     /**********************************************************************
      * DOCUMENTS
